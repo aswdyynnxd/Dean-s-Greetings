@@ -1,0 +1,582 @@
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>New Year</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+  background:black;
+  color:white;
+  font-family:'Poppins',sans-serif;
+}
+
+/* Night sky */
+body{
+  background:
+    radial-gradient(circle at 20% 30%, #1a2a6c, transparent 40%),
+    radial-gradient(circle at 80% 70%, #b21f1f, transparent 40%),
+    radial-gradient(circle at 50% 50%, #020111, #000);
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+/* Countdown */
+#countdown{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  text-align:center;
+  z-index:10;
+  text-shadow:0 0 30px rgba(255,255,255,.8);
+}
+
+.count-num{
+  font-size:clamp(8rem, 25vw, 18rem);
+}
+
+.count-text{
+  font-size:clamp(2rem, 6vw, 4rem);
+}
+
+/* After screen */
+#after{
+  position:absolute;
+  inset:0;
+  z-index:10;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  visibility:hidden;
+  pointer-events:none;
+}
+
+/* Headline */
+#title{
+  font-family:'Playfair Display',serif;
+  text-align:center;
+  margin-bottom:25px;
+  font-size:clamp(2.2rem,6vw,4rem);
+  letter-spacing:3px;
+  text-shadow: 0 0 10px gold, 0 0 20px goldenrod, 0 0 30px gold;
+}
+
+/* Subtitle below carousel */
+
+.subtitle{
+font-family:'Playfair Display',serif; /* same as headline */
+margin-top:20px;
+font-size:clamp(1.1rem,3.5vw,1.3rem);
+opacity:0.85;
+text-align:center;
+
+}
+
+.track{
+  display:flex;
+  transition:transform .35s ease;
+}/* Headline (already set) */
+
+/* Carousel */
+.carousel{
+  width:90%;
+  max-width:600px;
+  margin:0 auto;
+  overflow:hidden;
+  touch-action:pan-y;
+  position:relative;
+}
+
+
+.slide{
+  min-width:100%;
+  padding:30px;
+  box-sizing:border-box;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  border-radius:20px;
+}
+
+.slide h2{
+  font-family:'Poppins',sans-serif;
+  margin-top:0;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size:clamp(1.5rem,4vw,2rem);
+  text-align:center;
+}
+
+.slide p{
+  font-family:'Poppins',sans-serif;
+  color:white;
+  margin-top:5px;
+  line-height:1.5;
+  text-align:center;
+}
+
+/* Subtitle below carousel */
+.subtitle{
+  font-family:'Playfair Display',serif;
+  margin-top:20px;
+  font-size:clamp(1rem,3.5vw,1.3rem);
+  opacity:0.85;
+  text-align:center;
+  text-shadow:0 0 8px gold;
+}
+
+/* Carousel Dots */
+.dots{
+  display:flex;
+  justify-content:center;
+  margin-top:15px;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  margin:0 5px;
+  background:rgba(255,255,255,0.4);
+  border-radius:50%;
+  cursor:pointer;
+  transition:background .3s;
+}
+
+.dot.active{
+  background:gold;
+}
+
+/* =====BOBBING ELEMENT===== */
+#floatingMessage{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  letter-spacing: 4px;
+  text-align: center;
+  text-shadow:
+    0 0 15px gold,
+    0 0 30px goldenrod,
+    0 0 50px gold;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  animation: bob 2.5s ease-in-out infinite;
+  transition: 
+    top 0.9s ease,
+    transform 0.9s ease,
+    font-size 0.9s ease,
+    opacity 0.5s ease;
+}
+
+#floatingMessage.show{
+  opacity: 1;
+}
+
+#floatingMessage.shrink{
+  top: calc(50% + 180px); /* just above carousel */
+  transform: translate(-50%, 0) scale(0.55);
+}
+
+/* Bobbing motion */
+@keyframes bob{
+  0%,100%{ transform: translate(-50%, -50%) scale(1); }
+  50%{ transform: translate(-50%, -65%) scale(1.03); }
+}
+/* ===== END BOBBING ELEMENT===== */
+
+/* Add beating animation */
+  #title {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px gold, 0 0 20px goldenrod, 0 0 30px gold;
+    transform-origin: center;
+    animation: beat 1.5s infinite;
+    display: inline-block;
+  }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  
+  /* ===== FOCUS MODE FOR FIRST MESSAGE ===== */
+body.focus-mode #carousel,
+body.focus-mode .subtitle,
+body.focus-mode #title {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#floatingMessage.vanish {
+  animation: shrinkAway 0.9s ease forwards;
+}
+
+@keyframes shrinkAway {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+/* ===== END FOCUS MODE ===== */
+/* ===== INSTRUCTIONS ===== */
+#instructions{
+  position: fixed;
+  bottom: 35px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 15;
+  animation: fadeInUp 1.2s ease forwards;
+  animation-delay: 0.6s;
+}
+
+#instructions .tap{
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+#instructions .swipe{
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+@keyframes fadeInUp{
+  from{
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+
+<body>
+<canvas id="fireworks"></canvas>
+
+<!-- Countdown -->
+<div id="countdown">
+  <div class="count-text">Get Ready</div>
+</div>
+
+<!-- After screen -->
+<div id="after">
+  <div id="title">HAPPY NEW YEAR!!!</div>
+   <div id="floatingMessage">HAPPY NEW YEAR EVERYONE!!!</div>
+   <div id="instructions">
+  <div class="tap">Tap to continue</div>
+  <div class="swipe">Swipe to read messages</div>
+   </div>
+  <div class="carousel" id="carousel">
+    <div class="track" id="track">
+      <div class="slide"><h2>-Anna</h2><p>Happy New Year! Wishing everyone success in the coming year, I hope life becomes a little easier, and we keep choosing to move forward no matter what. God bless!!💞💞</p></div>
+      <div class="slide"><h2>-Angge</h2><p>As the year turns, allow yourself a fresh start filled with patience, peace, and compassion for yourself and for others.🥰💛</p></div>
+      <div class="slide"><h2>-Solana</h2><p>Hi! please be gentle with yourself:) your mistakes simply remind u that you’re human enough to fall and aware enough to stand up again;) the good and bad in u both exist and both matter. You can always start again! hindi ‘yan pasabot na you will start from zero all over again:p because this time, u carry ur scars, experiences, and mga lessons that shaped you:)) UNTIL THEN, keep breathing and keep trying. HAPPY NEW YEAR!💛</p></div>
+      <div class="slide"><h2>-Ante Pastilan</h2><p>A New Year is not just about starting something new. It's also about putting the past behind,  Along with tears, triumph, and regrets. It's about clearing up And welcome life's new beginnings.
+Life has been great so far...
+Wishing all the Best chapter yet in this coming New Year.. Merry Christmas and a Happy New Year to all.</p></div>
+      <div class="slide"><h2>-Anonymous</h2><p>Hello everyone! As this will be our last yr together, I wish that we will eventually be happy with our life and be successful someday. Find what fulfills you and pursue your dreams. Wishing you all the best as we go on our own ways after graduation!</p></div>
+      <div class="slide"><h2>-Anonymous</h2><p>Stay strong couples!!</p></div>
+      <div class="slide"><h2>-Mr. Loverman</h2><p>Happy yearrr wlay new Kay sya man gihapun</p></div>
+      <div class="slide"><h2>-Isaw</h2><p>Pwede dili ta musulod sa Jan 5??</p></div>
+      <div class="slide"><h2>-plsplspls</h2><p>Hatag mango float guys</p></div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+  
+  <p class="subtitle">
+    May this new year bring you more blessings ✨
+  </p>
+</div>
+
+<!-- Music -->
+<audio id="music" src="Happy-New-Year.mp3" preload="auto"></audio>
+
+<script>
+/* ---------- Countdown ---------- */
+const sequence=[
+  {t:"Get Ready...",c:"count-text"},
+  {t:"5",c:"count-num"},
+  {t:"4",c:"count-num"},
+  {t:"3",c:"count-num"},
+  {t:"2",c:"count-num"},
+  {t:"1",c:"count-num"},
+  {t:"IT'S TIME!!!",c:"count-text"}
+];
+
+let step=0;
+const cd=document.getElementById("countdown");
+
+const timer=setInterval(()=>{
+  cd.innerHTML=`<div class="${sequence[step].c}">${sequence[step].t}</div>`;
+  step++;
+  if(step===sequence.length){
+    clearInterval(timer);
+    setTimeout(startShow,800);
+  }
+},1000);
+
+/* ---------- Start Show ---------- */
+function startShow() {
+  document.body.classList.add("focus-mode");
+  cd.style.display = "none";
+  
+  const after = document.getElementById("after");
+  after.style.visibility = "visible";
+  after.style.pointerEvents = "auto";
+  
+  unlockAudio();
+  startBigFirework();
+  setTimeout(startFireworks, 1200);
+  initCarousel();
+}
+
+/* ---------- Audio (mobile-safe) ---------- */
+function unlockAudio(){
+  const audio=document.getElementById("music");
+  audio.volume=0.8;
+
+  audio.play().catch(()=>{
+    document.body.addEventListener("touchstart",()=>audio.play(),{once:true});
+    document.body.addEventListener("click",()=>audio.play(),{once:true});
+  });
+}
+
+/* ---------- Big Center Firework ---------- */
+function startBigFirework() {
+  const c = document.getElementById("fireworks");
+  const x = c.getContext("2d");
+  c.width = innerWidth;
+  c.height = innerHeight;
+
+  const centerX = c.width / 2;
+  const centerY = c.height / 2;
+
+  let sparks = [];
+
+  // Create initial sparks
+  for (let i = 0; i < 200; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 6 + 2;
+    sparks.push({
+      x: centerX,
+      y: centerY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      hue: Math.random() * 360
+    });
+  }
+
+  (function anim() {
+    x.fillStyle = "rgba(0,0,0,0.15)";
+    x.fillRect(0, 0, c.width, c.height);
+
+    sparks.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05; // gravity
+      p.life -= 0.02;
+
+      x.globalAlpha = p.life;
+      x.fillStyle = `hsl(${p.hue}, 100%, 50%)`;
+      x.beginPath();
+      x.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      x.fill();
+
+      if (p.life <= 0) sparks.splice(i, 1);
+    });
+
+    x.globalAlpha = 1;
+
+    if (sparks.length > 0) requestAnimationFrame(anim);
+  })();
+  /* ===== NEW FLOATING MESSAGE LOGIC ===== */
+  const floatingMessage = document.getElementById("floatingMessage");
+  let floated = false;
+
+  function showFloatingMessage(){
+    floatingMessage.classList.add("show");
+
+    // Auto move after 3 seconds
+    setTimeout(moveFloatingMessage, 3000);
+  }
+
+  function moveFloatingMessage(){
+    if(floated) return;
+    floated = true;
+    floatingMessage.classList.add("shrink");
+}
+function vanishFloatingMessage() {
+  if (!floated) moveFloatingMessage();
+  
+  floatingMessage.classList.add("vanish");
+  
+  // Start music on FIRST interaction (browser-safe)
+  const audio = document.getElementById("music");
+  audio.play().catch(() => {});
+  
+  setTimeout(() => {
+    document.body.classList.remove("focus-mode");
+    document.getElementById("instructions").style.opacity = "1";
+  }, 900);
+}
+
+/* Auto vanish after 3s */
+setTimeout(vanishFloatingMessage, 3000);
+
+/* User interaction vanish */
+["click","touchstart"].forEach(evt=>{
+  document.addEventListener(evt, vanishFloatingMessage, { once:true });
+}); 
+
+  /* User interaction triggers move */
+  ["click","touchstart"].forEach(evt=>{
+    document.addEventListener(evt, moveFloatingMessage, { once:true });
+  });
+/* ===== END FLOATING MESSAGE LOGIC ===== */
+
+  setTimeout(showFloatingMessage, 900);
+}
+
+/* ---------- Carousel ---------- */
+const track=document.getElementById("track");
+const carousel=document.getElementById("carousel");
+const dotsContainer=document.getElementById("dots");
+const slides=document.querySelectorAll(".slide");
+let index=0,startX=0,isDown=false;
+let autoSlideInterval;
+
+function update(){
+  track.style.transform=`translateX(-${index*100}%)`;
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active', i===index);
+  });
+}
+
+function createDots(){
+  for(let i=0;i<slides.length;i++){
+    const dot=document.createElement('div');
+    dot.classList.add('dot');
+    if(i===0) dot.classList.add('active');
+    dot.addEventListener('click',()=>{ index=i; update(); resetAutoSlide(); });
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function resetAutoSlide(){
+  clearInterval(autoSlideInterval);
+  autoSlideInterval = setInterval(()=>{ index=(index+1)%slides.length; update(); }, 10000);
+}
+
+function initCarousel(){
+  createDots();
+  resetAutoSlide();
+}
+
+/* Swipe */
+carousel.addEventListener("touchstart",e=>{ startX=e.touches[0].clientX; });
+carousel.addEventListener("touchend",e=>{
+  const diff=e.changedTouches[0].clientX-startX;
+  if(diff>50) index=Math.max(0,index-1);
+  if(diff<-50) index=Math.min(slides.length-1,index+1);
+  update();
+  resetAutoSlide();
+});
+carousel.addEventListener("mousedown",e=>{ isDown=true; startX=e.clientX; });
+carousel.addEventListener("mouseup",e=>{
+  if(!isDown) return; isDown=false;
+  const diff=e.clientX-startX;
+  if(diff>50) index=Math.max(0,index-1);
+  if(diff<-50) index=Math.min(slides.length-1,index+1);
+  update();
+  resetAutoSlide();
+});
+
+/* ---------- Fireworks ---------- */
+function startFireworks(){
+  const c=document.getElementById("fireworks");
+  const x=c.getContext("2d");
+  c.width=innerWidth;
+  c.height=innerHeight;
+
+  let shells=[],sparks=[];
+
+  setInterval(()=>{
+    const depth = Math.random() < 0.5 ? 0.6 : 1;
+    shells.push({
+      x: Math.random() * c.width,
+      y: c.height,
+      vy: -(8 + Math.random() * 3),
+      depth: depth,
+      targetY: c.height * (depth === 1 ? 0.35 : 0.25)
+    });
+  },700);
+
+  function explode(s){
+    for(let i=0;i<90;i++){
+      const a=Math.random()*Math.PI*2;
+      const sp=Math.random()*5*s.depth;
+      sparks.push({ x:s.x, y:s.y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, life:1, d:s.depth });
+    }
+  }
+
+  (function anim(){
+    x.fillStyle="rgba(0,0,0,.25)";
+    x.fillRect(0,0,c.width,c.height);
+
+    shells.forEach((s,i)=>{
+      s.y += s.vy;
+      x.fillStyle = "white";
+      x.fillRect(s.x, s.y, 2, 2);
+      if(s.y <= s.targetY){ explode(s); shells.splice(i,1); }
+    });
+
+    sparks.forEach((p,i)=>{
+      p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life -= 0.02;
+      x.globalAlpha = p.life;
+      x.fillStyle = `hsl(${Math.random()*360},100%,${p.d?70:50}%)`;
+      x.beginPath(); x.arc(p.x,p.y,2.2*p.d,0,Math.PI*2); x.fill();
+      if(p.life<=0) sparks.splice(i,1);
+    });
+
+    x.globalAlpha=1;
+    requestAnimationFrame(anim);
+  })();
+}
+</script>
+</body>
+</html>
